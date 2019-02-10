@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  cardash:
+    build:
+      context: ./
+      dockerfile: Dockerfile    
+    image: dramamask/cardash:${DOCKER_TAG_CARDASH:-latest-edge}
+    volumes:
+      - ./:/var/www/app:consistent
