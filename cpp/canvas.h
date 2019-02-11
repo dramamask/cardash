@@ -6,8 +6,13 @@ class Canvas : public Gtk::DrawingArea
     public:
         Canvas();
         virtual ~Canvas();
-        
+
+        /**
+         * Return the dimensions of the canvas
+         */ 
+        void getDimensions(int &width, int &height);
+
     protected:
         // Override default signal handler:
-        bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;    
+        bool on_draw(Cairo::RefPtr<Cairo::Context> const &cr) override;
 };
