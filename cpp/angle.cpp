@@ -2,7 +2,21 @@
 
 #include <math.h>
 
-double Angle::degToRad(double angle)
+double Angle::degToCairo(double deg)
 {
-    return (angle/360) * 2 * M_PI;
+    return standardToCairo((makePositive(deg) / 360) * 2 * M_PI);
+}
+
+double Angle::makePositive(double deg)
+{
+    while (deg < 0) {
+        deg += 360;
+    }
+
+    return deg;
+}
+
+double Angle::standardToCairo(double rad)
+{
+    return rad - (M_PI / 2);
 }
