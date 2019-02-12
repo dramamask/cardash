@@ -8,7 +8,14 @@
 class Speedometer : public DashControl
 {
     public:
-        Speedometer(int xPos, int yPos, int radius, int angleFrom, int angleTo);
+        Speedometer(
+            int xPos, 
+            int yPos, 
+            int radius, 
+            int angleFrom, 
+            int angleTo,
+            int MaxSpeed
+        );
         void draw(Cairo::RefPtr<Cairo::Context> const & cr);
 
     private:
@@ -21,6 +28,11 @@ class Speedometer : public DashControl
          * Angle in degrees where the speedometer ends.
          */
         int angleTo;
+
+        /**
+         * The maximum speed displayed on the speedometer
+         */
+        int maxSpeed;
 };
 
 #endif

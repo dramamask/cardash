@@ -4,19 +4,21 @@
 
 Dashboard::Dashboard(int width, int height)
 {
-    int controlRadius = 0.8 * (height / 2); floa
+    int controlRadius = 0.8 * (height / 2);
 
     int speedoXPos = width / 2;
     int speedoYPos = height / 2;
     int speedoAngleFrom = -135;
     int speedoAngleTo = 135;
+    int maxSpeed = 160;
 
     this->speedometer = new Speedometer(
         speedoXPos, 
         speedoYPos, 
         controlRadius,
         speedoAngleFrom,
-        speedoAngleTo
+        speedoAngleTo,
+        maxSpeed
     );
 }
 
@@ -28,6 +30,9 @@ Dashboard::~Dashboard()
 
 bool Dashboard::on_draw(Cairo::RefPtr<Cairo::Context> const &cr)
 {
+    // TODO: Aquire the width and size from the parent class and
+    //       feed those values to the speedometer
+
     // Set background color to black
     cr->set_source_rgb(0, 0, 0);
     cr->paint();
