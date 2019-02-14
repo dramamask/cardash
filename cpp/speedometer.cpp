@@ -77,43 +77,64 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
  */
 void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
 {
+    // Define line and text colors
+    double lineCC = Color::webToFraction(140);
+    double textCC = Color::webToFraction(60);
+    
+    // Set line width
+    cr->set_line_width(1);
+
+    // Set font
+    // TODO: find a nice font.
+    // TODO: define the font somewhere in a central place
     cr->select_font_face("Ubuntu",
       Cairo::FontSlant::FONT_SLANT_NORMAL,
       Cairo::FontWeight::FONT_WEIGHT_NORMAL);
+    cr->set_font_size(14);
 
+    // Prepare for loop
     double increment = 10 * ((this->angleTo - this->angleFrom) / this->maxSpeed);
 
     double angle = this->angleFrom;
     bool done = false;
     double sinAngle;
     double cosAngle;
+    double textX; 
+    double textY;
+    int speed = 0;
 
+    // Loop to draw lines and text
     while (!done) {
+        // Calculate line coordinates
         sinAngle = sin(angle);
         cosAngle = cos(angle);
 
-        double x1 = this->xPos + (this->innerArc * this->radius * cosAngle);
-        double y1 = this->yPos + (this->innerArc * this->radius * sinAngle);
-        double x2 = this->xPos + (this->outerArc* this->radius * cosAngle);
-        double y2 = this->yPos + (this->outerArc * this->radius * sinAngle);
+        double x1 = this->xPos + ((this->innerArc - 0.02) * this->radius * cosAngle);
+        double y1 = this->yPos + ((this->innerArc - 0.02) * this->radius * sinAngle);
+        double x2 = this->xPos + ((this->outerArc + 0.04) * this->radius * cosAngle);
+        double y2 = this->yPos + ((this->outerArc + 0.04) * this->radius * sinAngle);
 
+        // Draw line
+        cr->set_source_rgb(lineCC, lineCC, lineCC);
         cr->move_to(x1, y1);
         cr->line_to(x2, y2);
         cr->stroke();
 
+        // Calculate text coordinates
+        // TODO: come up with a formula to accuratly place the text
+        textX = x1;
+        textY = y1;
+
+        // Draw text
+        cr->set_source_rgb(textCC, textCC, textCC);
+        cr->move_to(textX, textY);
+        cr->show_text(std::to_string(speed));
+
+        // Are we done?
         angle += increment;
-        if (angle > this->angleTo) {
+        speed += 10;
+        if (speed > this->maxSpeed) {
             done = true;
         }       
     }
-    
-    cr->set_font_size(10);
-    cr->move_to(100, 100);
-    cr->show_text(std::to_string(increment));
-    cr->move_to(100, 200);
-    cr->show_text(std::to_string(this->angleFrom));
-    cr->move_to(100, 300);
-    cr->show_text(std::to_string(this->angleTo));
-
-
 }
