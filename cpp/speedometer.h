@@ -16,18 +16,19 @@ class Speedometer : public DashControl
             int angleTo,
             int MaxSpeed
         );
-        void draw(Cairo::RefPtr<Cairo::Context> const & cr);
+        void draw(const Cairo::RefPtr<Cairo::Context> &cr);
+        void drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr);
 
     private:
         /**
-         * Angle in degrees where the speedometer starts.
+         * Angle in radians where the speedometer starts.
          */
-        int angleFrom;
+        double angleFrom;
 
         /**
-         * Angle in degrees where the speedometer ends.
+         * Angle in radians where the speedometer ends.
          */
-        int angleTo;
+        double angleTo;
 
         /**
          * The maximum speed displayed on the speedometer

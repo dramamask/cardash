@@ -1,5 +1,7 @@
 #include "speedometer.h"
 
+#include <string.h>
+
 #include "angle.h"
 #include "color.h"
 
@@ -13,13 +15,16 @@ Speedometer::Speedometer(
 )
     : DashControl(xPos, yPos, radius)
 {
-    this->angleFrom = angleFrom;
-    this->angleTo = angleTo;
+    this->angleFrom = Angle::degToCairo(angleFrom);
+    this->angleTo = Angle::degToCairo(angleTo);
     this->maxSpeed = maxSpeed;
 }
 
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
 {
+    //cr->rotate(Angle::getCairoRotateCorrection());
+    //cr->translate()
+
     double cc;
 
     // Outer arc
@@ -31,8 +36,8 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
         this->xPos, 
         this->yPos, 
         0.90 * this->radius, 
-        Angle::degToCairo(this->angleFrom), 
-        Angle::degToCairo(this->angleTo)
+        this->angleFrom, 
+        this->angleTo
     );  
     cr->stroke();
 
@@ -45,8 +50,8 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
         this->xPos, 
         this->yPos, 
         0.85 * this->radius, 
-        Angle::degToCairo(this->angleFrom), 
-        Angle::degToCairo(this->angleTo)
+        this->angleFrom, 
+        this->angleTo
     );
     cr->stroke();
 
@@ -54,11 +59,34 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
         this->xPos, 
         this->yPos, 
         0.75 * this->radius, 
-        Angle::degToCairo(this->angleFrom), 
-        Angle::degToCairo(this->angleTo)
+        this->angleFrom, 
+        this->angleTo
     );  
     cr->stroke();
 
+    this->drawMajorSpeedIndicators(cr);
+
     // TODO: draw major speed lines every 20 mph, taking maxSpeed into account
     // try color 140 for those lines
+}
+
+void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    double x1 = this->xPos + (0.75 * this->radius * cos(this->angleFrom));
+    double y1 = this->yPos + (0.75 * this->radius * sin(this->angleFrom));
+    double x2 = this->xPos + (0.85 * this->radius * cos(this->angleFrom));
+    double y2 = this->yPos + (0.85 * this->radius * sin(this->angleFrom));
+
+    cr->move_to(x1, y1);
+    cr->line_to(x2, y2);
+    cr->stroke();
+//     cr->select_font_face("Ubuntu",
+//       Cairo::FontSlant::FONT_SLANT_NORMAL,
+//       Cairo::FontWeight::FONT_WEIGHT_NORMAL);
+
+//   cr->set_font_size(30);
+//   cr->move_to(100, 100);
+//   cr->show_text(std::to_string(x1));
+
+
 }

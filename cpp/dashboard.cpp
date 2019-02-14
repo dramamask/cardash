@@ -30,9 +30,6 @@ Dashboard::~Dashboard()
 
 bool Dashboard::on_draw(Cairo::RefPtr<Cairo::Context> const &cr)
 {
-    // TODO: Aquire the width and size from the parent class and
-    //       feed those values to the speedometer
-
     // Set background color to black
     cr->set_source_rgb(0, 0, 0);
     cr->paint();
