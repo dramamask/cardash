@@ -34,6 +34,13 @@ class Speedometer : public DashControl
          * The maximum speed displayed on the speedometer
          */
         int maxSpeed;
+
+        /**
+         * Radius of the arcs, as a fraction of the total radius
+         */
+        double outerMostArc;
+        double outerArc;
+        double innerArc;
 };
 
 #endif

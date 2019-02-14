@@ -8,6 +8,8 @@ class Angle
         static double degToCairo(double deg);
         static double normalize(double deg); 
         static double standardToCairo(double rad);
+
+    private:
         static double getCairoRotateCorrection();
     
 };

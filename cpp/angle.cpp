@@ -25,7 +25,7 @@ double Angle::degToRad(double deg)
  */
 double Angle::degToCairo(double deg)
 {
-    return standardToCairo((normalize(deg) / 360) * 2 * M_PI);
+    return standardToCairo(degToRad(deg));
 }
 
 /**

@@ -18,6 +18,10 @@ Speedometer::Speedometer(
     this->angleFrom = Angle::degToCairo(angleFrom);
     this->angleTo = Angle::degToCairo(angleTo);
     this->maxSpeed = maxSpeed;
+
+    this->outerMostArc = 0.9;
+    this->outerArc = 0.85;
+    this->innerArc = 0.75;
 }
 
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
@@ -65,28 +69,51 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
     cr->stroke();
 
     this->drawMajorSpeedIndicators(cr);
-
-    // TODO: draw major speed lines every 20 mph, taking maxSpeed into account
-    // try color 140 for those lines
 }
 
+/**
+ * draw major speed lines every 10 mph, taking maxSpeed into account.
+ * try color 140 for those lines
+ */
 void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
 {
-    double x1 = this->xPos + (0.75 * this->radius * cos(this->angleFrom));
-    double y1 = this->yPos + (0.75 * this->radius * sin(this->angleFrom));
-    double x2 = this->xPos + (0.85 * this->radius * cos(this->angleFrom));
-    double y2 = this->yPos + (0.85 * this->radius * sin(this->angleFrom));
+    cr->select_font_face("Ubuntu",
+      Cairo::FontSlant::FONT_SLANT_NORMAL,
+      Cairo::FontWeight::FONT_WEIGHT_NORMAL);
 
-    cr->move_to(x1, y1);
-    cr->line_to(x2, y2);
-    cr->stroke();
-//     cr->select_font_face("Ubuntu",
-//       Cairo::FontSlant::FONT_SLANT_NORMAL,
-//       Cairo::FontWeight::FONT_WEIGHT_NORMAL);
+    double increment = 10 * ((this->angleTo - this->angleFrom) / this->maxSpeed);
 
-//   cr->set_font_size(30);
-//   cr->move_to(100, 100);
-//   cr->show_text(std::to_string(x1));
+    double angle = this->angleFrom;
+    bool done = false;
+    double sinAngle;
+    double cosAngle;
+
+    while (!done) {
+        sinAngle = sin(angle);
+        cosAngle = cos(angle);
+
+        double x1 = this->xPos + (this->innerArc * this->radius * cosAngle);
+        double y1 = this->yPos + (this->innerArc * this->radius * sinAngle);
+        double x2 = this->xPos + (this->outerArc* this->radius * cosAngle);
+        double y2 = this->yPos + (this->outerArc * this->radius * sinAngle);
+
+        cr->move_to(x1, y1);
+        cr->line_to(x2, y2);
+        cr->stroke();
+
+        angle += increment;
+        if (angle > this->angleTo) {
+            done = true;
+        }       
+    }
+    
+    cr->set_font_size(10);
+    cr->move_to(100, 100);
+    cr->show_text(std::to_string(increment));
+    cr->move_to(100, 200);
+    cr->show_text(std::to_string(this->angleFrom));
+    cr->move_to(100, 300);
+    cr->show_text(std::to_string(this->angleTo));
 
 
 }
