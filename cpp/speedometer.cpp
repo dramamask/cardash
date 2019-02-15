@@ -22,13 +22,11 @@ Speedometer::Speedometer(
     this->outerMostArc = 0.9;
     this->outerArc = 0.85;
     this->innerArc = 0.75;
+    this->smallFontSize = 14;
 }
 
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
 {
-    //cr->rotate(Angle::getCairoRotateCorrection());
-    //cr->translate()
-
     double cc;
 
     // Outer arc
@@ -73,7 +71,6 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
 
 /**
  * draw major speed lines every 10 mph, taking maxSpeed into account.
- * try color 140 for those lines
  */
 void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
 {
@@ -90,7 +87,7 @@ void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
     cr->select_font_face("Ubuntu",
       Cairo::FontSlant::FONT_SLANT_NORMAL,
       Cairo::FontWeight::FONT_WEIGHT_NORMAL);
-    cr->set_font_size(14);
+    cr->set_font_size(this->smallFontSize);
 
     // Prepare for loop
     double increment = 10 * ((this->angleTo - this->angleFrom) / this->maxSpeed);
@@ -111,8 +108,8 @@ void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
 
         double x1 = this->xPos + ((this->innerArc - 0.02) * this->radius * cosAngle);
         double y1 = this->yPos + ((this->innerArc - 0.02) * this->radius * sinAngle);
-        double x2 = this->xPos + ((this->outerArc + 0.04) * this->radius * cosAngle);
-        double y2 = this->yPos + ((this->outerArc + 0.04) * this->radius * sinAngle);
+        double x2 = this->xPos + ((this->outerArc + 0.02) * this->radius * cosAngle);
+        double y2 = this->yPos + ((this->outerArc + 0.02) * this->radius * sinAngle);
 
         // Draw line
         cr->set_source_rgb(lineCC, lineCC, lineCC);
@@ -121,9 +118,13 @@ void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
         cr->stroke();
 
         // Calculate text coordinates
-        // TODO: come up with a formula to accuratly place the text
-        textX = x1;
-        textY = y1;
+        int numOfDigits = this->getNumberOfDigits(speed);
+        textX = x1 -
+            (0.5 * this->smallFontSize) -
+            (cosAngle * 0.185 * this->smallFontSize * numOfDigits * numOfDigits);
+        textY = y1 -
+            (sinAngle * 1.2 * this->smallFontSize)
+            + 2;
 
         // Draw text
         cr->set_source_rgb(textCC, textCC, textCC);
@@ -137,4 +138,21 @@ void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
             done = true;
         }       
     }
+}
+
+/**
+ * Returns number of digits in a number. 
+ * Works for number < 1000.
+ */
+int Speedometer::getNumberOfDigits(int number)
+{
+    if (number < 100 ) {
+        if (number < 10) {
+            return 1;
+        }
+
+        return 2;
+    }        
+
+    return 3;
 }

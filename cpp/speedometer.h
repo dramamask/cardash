@@ -41,6 +41,14 @@ class Speedometer : public DashControl
         double outerMostArc;
         double outerArc;
         double innerArc;
+
+        /**
+         * Font sizes
+         */
+        int smallFontSize;
+        int largeFontSize;
+
+        int getNumberOfDigits(int number);
 };
 
 #endif
