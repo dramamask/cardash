@@ -23,6 +23,8 @@ Speedometer::Speedometer(
     this->outerArc = 0.85;
     this->innerArc = 0.75;
     this->smallFontSize = 14;
+    this->largeFontSize = 60;
+    this->fontFamily = "Ubuntu";
 }
 
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
@@ -67,10 +69,11 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
     cr->stroke();
 
     this->drawMajorSpeedIndicators(cr);
+    this->drawMinorSpeedIndicators(cr);
 }
 
 /**
- * draw major speed lines every 10 mph, taking maxSpeed into account.
+ * Draw major speed lines every 10 mph, taking maxSpeed into account.
  */
 void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
 {
@@ -135,6 +138,52 @@ void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
         angle += increment;
         speed += 10;
         if (speed > this->maxSpeed) {
+            done = true;
+        }       
+    }
+}
+
+/**
+ * Draw minor speed lines in between the 10 mph lines.
+ */
+void Speedometer::drawMinorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    // Define line and text colors
+    double lineCC = Color::webToFraction(60);
+    
+    // Set line width
+    cr->set_line_width(1);
+
+    // Prepare for loop
+    double increment = 10 * ((this->angleTo - this->angleFrom) / this->maxSpeed);
+
+    double angle = this->angleFrom + (0.5 * increment);
+    bool done = false;
+    double sinAngle;
+    double cosAngle;
+    double textX; 
+    double textY;
+
+    // Loop to draw lines and text
+    while (!done) {
+        // Calculate line coordinates
+        sinAngle = sin(angle);
+        cosAngle = cos(angle);
+
+        double x1 = this->xPos + ((this->innerArc + 0.01) * this->radius * cosAngle);
+        double y1 = this->yPos + ((this->innerArc + 0.01) * this->radius * sinAngle);
+        double x2 = this->xPos + ((this->outerArc - 0.01) * this->radius * cosAngle);
+        double y2 = this->yPos + ((this->outerArc - 0.01) * this->radius * sinAngle);
+
+        // Draw line
+        cr->set_source_rgb(lineCC, lineCC, lineCC);
+        cr->move_to(x1, y1);
+        cr->line_to(x2, y2);
+        cr->stroke();
+
+        // Are we done?
+        angle += increment;
+        if (angle > this->angleTo) {
             done = true;
         }       
     }

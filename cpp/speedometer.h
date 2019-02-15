@@ -4,6 +4,7 @@
 #include "dashcontrol.h"
 
 #include <gtkmm.h>
+#include <string.h>
 
 class Speedometer : public DashControl
 {
@@ -17,7 +18,6 @@ class Speedometer : public DashControl
             int MaxSpeed
         );
         void draw(const Cairo::RefPtr<Cairo::Context> &cr);
-        void drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr);
 
     private:
         /**
@@ -43,11 +43,14 @@ class Speedometer : public DashControl
         double innerArc;
 
         /**
-         * Font sizes
+         * Font defintions
          */
         int smallFontSize;
         int largeFontSize;
+        std::string fontFamily;
 
+        void drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr);
+        void drawMinorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr);
         int getNumberOfDigits(int number);
 };
 
