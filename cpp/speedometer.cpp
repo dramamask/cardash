@@ -29,6 +29,8 @@ Speedometer::Speedometer(
 
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
 {
+    double currentSpeed = 47;
+
     double cc;
 
     // Outer arc
@@ -74,12 +76,17 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
     // Speed lines
     this->drawMajorSpeedLines(cr);
     this->drawMinorSpeedLines(cr);
+
+    // The actual speed indicators
+    this->drawForegroundSpeedIndicator(cr, currentSpeed);
+    //TODO: this->drawSpeedText(cr, currentSpeed);
+
 }
 
 void Speedometer::drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     // Dark orange color
-    cr->set_source_rgb(0.26, 0.13, 0);
+    cr->set_source_rgb(0.20, 0.10, 0);
 
     // Set arc line with
     double lineWidth = ((this->outerArc - this->innerArc - 0.02) * this->radius);
@@ -101,10 +108,46 @@ void Speedometer::drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Contex
 
 void Speedometer::drawForegroundSpeedIndicator(
             const Cairo::RefPtr<Cairo::Context> &cr, 
-            double speed
+            double currentSpeed
         )
 {
-    // TODO
+    // Dark orange color
+    cr->set_source_rgb(1, 0.74, 0);
+
+    // Set arc line with
+    double lineWidth = ((this->outerArc - this->innerArc - 0.02) * this->radius);
+    cr->set_line_width(lineWidth);
+    
+    // Calculate arc radius and to-angle
+    double radius = 0.5 * (this->outerArc + this->innerArc) * this->radius;
+    double angleTo = this->getSpeedAngle(currentSpeed);
+
+    // Draw the first part of the arc (no line cap at the bottom)    
+    cr->arc(
+        this->xPos, 
+        this->yPos, 
+        radius, 
+        this->angleFrom, 
+        angleTo - 0.15
+    );
+    cr->stroke();
+
+    // Draw the last part of the arc (line cap round)
+    cr->set_line_cap(Cairo::LineCap::LINE_CAP_ROUND);
+    cr->arc(
+        this->xPos, 
+        this->yPos, 
+        radius, 
+        angleTo - 0.15,
+        angleTo
+    );
+    cr->stroke();
+
+    // Set the line cap back to "none"
+    cr->set_line_cap(Cairo::LineCap::LINE_CAP_BUTT);
+
+    // TODO: make the inner and outer arcs orange upto the currentSpeed
+    // TODO: add glow around the end of the speed indicator arc
 }
 
 /**
@@ -237,4 +280,12 @@ int Speedometer::getNumberOfDigits(int number)
     }        
 
     return 3;
+}
+
+/**
+ * Get arc angle for a certain speed
+ */
+double Speedometer::getSpeedAngle(double speed)
+{
+    return this->angleFrom + (speed * ((this->angleTo - this->angleFrom) / this->maxSpeed));
 }

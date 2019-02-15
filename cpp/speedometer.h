@@ -60,6 +60,9 @@ class Speedometer : public DashControl
         void drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
         void drawMinorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
         int getNumberOfDigits(int number);
+  
+        double getSpeedAngle(double speed);
+
 };
 
 #endif
