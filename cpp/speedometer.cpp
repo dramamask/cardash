@@ -39,7 +39,7 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
     cr->arc(
         this->xPos, 
         this->yPos, 
-        0.90 * this->radius, 
+        this->outerMostArc * this->radius, 
         this->angleFrom, 
         this->angleTo
     );  
@@ -53,7 +53,7 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
     cr->arc(
         this->xPos, 
         this->yPos, 
-        0.85 * this->radius, 
+        this->outerArc * this->radius, 
         this->angleFrom, 
         this->angleTo
     );
@@ -62,20 +62,55 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
     cr->arc(
         this->xPos, 
         this->yPos, 
-        0.75 * this->radius, 
+        this->innerArc * this->radius, 
         this->angleFrom, 
         this->angleTo
     );  
     cr->stroke();
 
-    this->drawMajorSpeedIndicators(cr);
-    this->drawMinorSpeedIndicators(cr);
+    // Speed indicator background arc
+    this->drawBackgroundSpeedIndicator(cr);
+
+    // Speed lines
+    this->drawMajorSpeedLines(cr);
+    this->drawMinorSpeedLines(cr);
+}
+
+void Speedometer::drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    // Dark orange color
+    cr->set_source_rgb(0.26, 0.13, 0);
+
+    // Set arc line with
+    double lineWidth = ((this->outerArc - this->innerArc - 0.02) * this->radius);
+    cr->set_line_width(lineWidth);
+
+    // Calculate arc radius
+    double radius = 0.5 * (this->outerArc + this->innerArc) * this->radius;
+
+    // Draw arc
+    cr->arc(
+        this->xPos, 
+        this->yPos, 
+        radius, 
+        this->angleFrom, 
+        this->angleTo
+    );
+    cr->stroke();
+}
+
+void Speedometer::drawForegroundSpeedIndicator(
+            const Cairo::RefPtr<Cairo::Context> &cr, 
+            double speed
+        )
+{
+    // TODO
 }
 
 /**
- * Draw major speed lines every 10 mph, taking maxSpeed into account.
+ * Draw major speed lines every 10 mph (taking maxSpeed into account).
  */
-void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
+void Speedometer::drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     // Define line and text colors
     double lineCC = Color::webToFraction(140);
@@ -146,10 +181,11 @@ void Speedometer::drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
 /**
  * Draw minor speed lines in between the 10 mph lines.
  */
-void Speedometer::drawMinorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr)
+void Speedometer::drawMinorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     // Define line and text colors
     double lineCC = Color::webToFraction(60);
+    cr->set_source_rgb(lineCC, lineCC, lineCC);
     
     // Set line width
     cr->set_line_width(1);
@@ -161,8 +197,6 @@ void Speedometer::drawMinorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
     bool done = false;
     double sinAngle;
     double cosAngle;
-    double textX; 
-    double textY;
 
     // Loop to draw lines and text
     while (!done) {
@@ -176,7 +210,6 @@ void Speedometer::drawMinorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &
         double y2 = this->yPos + ((this->outerArc - 0.01) * this->radius * sinAngle);
 
         // Draw line
-        cr->set_source_rgb(lineCC, lineCC, lineCC);
         cr->move_to(x1, y1);
         cr->line_to(x2, y2);
         cr->stroke();

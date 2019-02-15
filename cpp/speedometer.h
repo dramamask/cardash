@@ -49,8 +49,16 @@ class Speedometer : public DashControl
         int largeFontSize;
         std::string fontFamily;
 
-        void drawMajorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr);
-        void drawMinorSpeedIndicators(const Cairo::RefPtr<Cairo::Context> &cr);
+        // Functions to draw the speed indicator arcs
+        void drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr);
+        void drawForegroundSpeedIndicator(
+            const Cairo::RefPtr<Cairo::Context> &cr, 
+            double speed
+        );
+
+        // Functions to draw the speed lines
+        void drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
+        void drawMinorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
         int getNumberOfDigits(int number);
 };
 
