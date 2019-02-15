@@ -22,19 +22,35 @@ Speedometer::Speedometer(
     this->outerMostArc = 0.9;
     this->outerArc = 0.85;
     this->innerArc = 0.75;
-    this->smallFontSize = 14;
-    this->largeFontSize = 60;
+    this->fontSizeSmall = 14;
+    this->fontSizeLarge = 160;
+    this->fontSizeMph = 20;
     this->fontFamily = "Ubuntu";
+
+    // TODO: find a nice font.
 }
 
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
 {
     double currentSpeed = 47;
 
-    double cc;
+    this->drawOuterArc(cr);
+    this->drawInnerArcs(cr);
 
-    // Outer arc
-    cc = Color::webToFraction(100);
+    this->drawBackgroundSpeedIndicator(cr);
+
+    this->drawMajorSpeedLines(cr);
+    this->drawMinorSpeedLines(cr);
+
+    this->drawMph(cr);
+
+    this->drawForegroundSpeedIndicator(cr, currentSpeed);
+    this->drawSpeedText(cr, currentSpeed);
+}
+
+void Speedometer::drawOuterArc(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    double cc = Color::webToFraction(100);
     cr->set_source_rgb(cc, cc, cc);    
     cr->set_line_width(2);
 
@@ -46,9 +62,11 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
         this->angleTo
     );  
     cr->stroke();
+}
 
-    // Inner two arcs
-    cc = Color::webToFraction(60);
+void Speedometer::drawInnerArcs(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    double cc = Color::webToFraction(60);
     cr->set_source_rgb(cc, cc, cc);
     cr->set_line_width(1);
     
@@ -69,18 +87,6 @@ void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
         this->angleTo
     );  
     cr->stroke();
-
-    // Speed indicator background arc
-    this->drawBackgroundSpeedIndicator(cr);
-
-    // Speed lines
-    this->drawMajorSpeedLines(cr);
-    this->drawMinorSpeedLines(cr);
-
-    // The actual speed indicators
-    this->drawForegroundSpeedIndicator(cr, currentSpeed);
-    //TODO: this->drawSpeedText(cr, currentSpeed);
-
 }
 
 void Speedometer::drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr)
@@ -107,10 +113,13 @@ void Speedometer::drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Contex
 }
 
 void Speedometer::drawForegroundSpeedIndicator(
-            const Cairo::RefPtr<Cairo::Context> &cr, 
-            double currentSpeed
-        )
+    const Cairo::RefPtr<Cairo::Context> &cr, 
+    double currentSpeed
+)
 {
+    // Make sure we end the previous drawing path
+    cr->begin_new_path();
+
     // Dark orange color
     cr->set_source_rgb(1, 0.74, 0);
 
@@ -162,13 +171,11 @@ void Speedometer::drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr)
     // Set line width
     cr->set_line_width(1);
 
-    // Set font
-    // TODO: find a nice font.
-    // TODO: define the font somewhere in a central place
-    cr->select_font_face("Ubuntu",
+    // Set font    
+    cr->select_font_face(this->fontFamily,
       Cairo::FontSlant::FONT_SLANT_NORMAL,
       Cairo::FontWeight::FONT_WEIGHT_NORMAL);
-    cr->set_font_size(this->smallFontSize);
+    cr->set_font_size(this->fontSizeSmall);
 
     // Prepare for loop
     double increment = 10 * ((this->angleTo - this->angleFrom) / this->maxSpeed);
@@ -201,10 +208,10 @@ void Speedometer::drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr)
         // Calculate text coordinates
         int numOfDigits = this->getNumberOfDigits(speed);
         textX = x1 -
-            (0.5 * this->smallFontSize) -
-            (cosAngle * 0.185 * this->smallFontSize * numOfDigits * numOfDigits);
+            (0.5 * this->fontSizeSmall) -
+            (cosAngle * 0.185 * this->fontSizeSmall * numOfDigits * numOfDigits);
         textY = y1 -
-            (sinAngle * 1.2 * this->smallFontSize)
+            (sinAngle * 1.2 * this->fontSizeSmall)
             + 2;
 
         // Draw text
@@ -288,4 +295,53 @@ int Speedometer::getNumberOfDigits(int number)
 double Speedometer::getSpeedAngle(double speed)
 {
     return this->angleFrom + (speed * ((this->angleTo - this->angleFrom) / this->maxSpeed));
+}
+
+void Speedometer::drawMph(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    // Set color
+    cr->set_source_rgb(1, 1, 1);
+
+    // Set font
+    cr->select_font_face(this->fontFamily,
+      Cairo::FontSlant::FONT_SLANT_NORMAL,
+      Cairo::FontWeight::FONT_WEIGHT_NORMAL);
+    cr->set_font_size(this->fontSizeMph);
+
+    // Calculate text location
+    double xPos = this->xPos - (0.9 * this->fontSizeMph);
+    double yPos = this->yPos + (0.5 * this->fontSizeLarge);
+    cr->move_to(xPos, yPos);
+
+    // Draw text
+    cr->show_text("mph");
+}
+
+/**
+ * Draw the actual speed in the middle of the dial
+ */
+void Speedometer::drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr, double currentSpeed)
+{
+    // Set color
+    cr->set_source_rgb(1, 1, 1);
+
+    // Set font
+    cr->select_font_face(this->fontFamily,
+      Cairo::FontSlant::FONT_SLANT_NORMAL,
+      Cairo::FontWeight::FONT_WEIGHT_NORMAL);
+    cr->set_font_size(this->fontSizeLarge);
+
+    // Calculate text location
+    double xPos = 
+        this->xPos - 
+        (0.3 * this->getNumberOfDigits(currentSpeed) * this->fontSizeLarge);
+    double yPos = 
+        this->yPos + 
+        (0.3 * this->fontSizeLarge);
+
+    // Go to text position
+    cr->move_to(xPos, yPos);
+
+    // Draw text
+    cr->show_text(std::to_string((int)currentSpeed));
 }
