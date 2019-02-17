@@ -91,8 +91,8 @@ void Speedometer::drawInnerArcs(const Cairo::RefPtr<Cairo::Context> &cr)
 
 void Speedometer::drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr)
 {
-    // Dark orange color
-    cr->set_source_rgb(0.20, 0.10, 0);
+    // Dark orange color    
+    cr->set_source_rgb(0.2, 0.1, 0);
 
     // Set arc line with
     double lineWidth = ((this->outerArc - this->innerArc - 0.02) * this->radius);
@@ -152,11 +152,19 @@ void Speedometer::drawForegroundSpeedIndicator(
     );
     cr->stroke();
 
+    // Draw glow around the end of the arc
+    Cairo::RefPtr<Cairo::RadialGradient> radial = Cairo::RadialGradient::create(100, 100, 50, 100, 100, 10);
+    radial->add_color_stop_rgba(0, 1, 0.74, 0, 0);
+    radial->add_color_stop_rgba(1, 1, 0.74, 0, 1);
+    cr->set_source(radial);
+    cr->arc(100, 100, 50, 0, 2 * M_PI);
+    cr->fill();
+    // TODO: fix and finish
+
     // Set the line cap back to "none"
     cr->set_line_cap(Cairo::LineCap::LINE_CAP_BUTT);
 
     // TODO: make the inner and outer arcs orange upto the currentSpeed
-    // TODO: add glow around the end of the speed indicator arc
 }
 
 /**
