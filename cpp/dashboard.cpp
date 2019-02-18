@@ -36,7 +36,7 @@ namespace DramaMask
         cr->set_source_rgb(0, 0, 0);
         cr->paint();
 
-        // Draw a dash controls    
+        // Draw the speedometer    
         this->speedometer->draw(cr);
 
         return true;
