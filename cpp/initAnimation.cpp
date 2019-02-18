@@ -13,6 +13,7 @@ namespace DramaMask
         this->frameTime = 1000 / this->frameRate;
         this->totalNumOfFrames = ((double)totalTime / 1000) * (double)frameRate;
         this->currentFrame = 0;
+        this->currentWaitTime = 0;
     }
 
     // Returns the time in ms taken up by one frame
@@ -30,8 +31,15 @@ namespace DramaMask
 
     // Returns true if the animation should keep going.
     // Returns false if the animation is done.
-    bool InitAnimation::incrementFrame()
+    bool InitAnimation::onTimer()
     {
+        // Handle the initial wait time       
+        if (this->currentWaitTime < this->initialWaitTime) {
+            this->currentWaitTime += this->frameTime;
+            return true;
+        }
+
+        // Increment the current frame, and check if we're done
         this->currentFrame++;
 
         if (this->currentFrame > this->totalNumOfFrames)

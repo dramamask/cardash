@@ -18,8 +18,8 @@ namespace DramaMask
             // Returns the current frame
             void getFrameInfo(int &currentFrame, int &totalNumOfFrames);
 
-            // Increments frame. Returns false if initialization is done.
-            bool incrementFrame();
+            // Call on timer callback. Returns false if initialization is done.
+            bool onTimer();
 
         private:
             int frameRate; // frames per second
@@ -29,6 +29,8 @@ namespace DramaMask
             int totalNumOfFrames; // Total number of frames during the animation
             int currentFrame; // Current frame
             int frameTime; // Number of ms per frame
+
+            int currentWaitTime; // Time we have currently been waiting to start animation
     };
 }
 

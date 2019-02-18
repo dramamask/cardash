@@ -62,7 +62,7 @@ namespace DramaMask
 
     bool Dashboard::onTimer()
     {
-        bool keepGoing = this->initAnimation->incrementFrame();
+        bool keepGoing = this->initAnimation->onTimer();
 
         if (keepGoing) {
             this->forceRedraw();
