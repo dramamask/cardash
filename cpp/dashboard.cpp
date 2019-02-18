@@ -23,7 +23,7 @@ namespace DramaMask
             maxSpeed
         );
 
-        this->currentSpeed = 10;
+        this->currentSpeed = 0;
     }
 
     Dashboard::~Dashboard()

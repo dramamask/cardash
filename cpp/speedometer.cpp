@@ -178,17 +178,17 @@ namespace DramaMask
             this->yPos, 
             radius, 
             this->angleFrom, 
-            angleTo - 0.15
+            angleTo
         );
         cr->stroke();
 
-        // Draw the last part of the arc (line cap round)
+        // Draw the round line cap
         cr->set_line_cap(Cairo::LineCap::LINE_CAP_ROUND);
         cr->arc(
             this->xPos, 
             this->yPos, 
             radius, 
-            angleTo - 0.15,
+            angleTo,
             angleTo
         );
         cr->stroke();
@@ -261,6 +261,9 @@ namespace DramaMask
 
             // Calculate text coordinates
             int numOfDigits = this->getNumberOfDigits(speed);
+            if (numOfDigits < 2) {
+                numOfDigits = 2; // Hack to properly position 1 digit numbers
+            }
             textX = x1 -
                 (0.5 * this->fontSizeSmall) -
                 (cosAngle * 0.185 * this->fontSizeSmall * numOfDigits * numOfDigits);
@@ -341,7 +344,7 @@ namespace DramaMask
     {
         if (number < 100 ) {
             if (number < 10) {
-                return 2; // Returning 2 on purpose as a hack for the font positioning!
+                return 1;
             }
 
             return 2;
