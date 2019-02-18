@@ -423,14 +423,18 @@ namespace DramaMask
         cr->show_text(std::to_string((int)this->currentSpeed));
     }
 
+    // Handle the initialization animation
     void Speedometer::handleInitAnimation(const Cairo::RefPtr<Cairo::Context> &cr)
     {
+        // Get the current frame information
         int currentFrame;
         int totalNumOfFrames;
         this->initAnimation->getFrameInfo(currentFrame, totalNumOfFrames);
 
+        // Calcuate the mph increment for each frame
         double mphPerFrame = (double)(2 * this->maxSpeed) / (double)totalNumOfFrames;
 
+        // Calculate the current speed to be displayed
         this->currentSpeed += ((double)currentFrame * mphPerFrame);
 
         if (currentFrame > (totalNumOfFrames / 2)) {

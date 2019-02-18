@@ -17,8 +17,8 @@ namespace DramaMask
 
         this->initAnimation = new InitAnimation(
             25, // frames per second
-            2000, // total animation time in ms (not including initial wait time)
-            500 // initial wait time in ms
+            1800, // total animation time in ms (not including initial wait time)
+            400 // initial wait time in ms
         );
 
         this->speedometer = new Speedometer(
