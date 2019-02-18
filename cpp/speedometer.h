@@ -18,11 +18,11 @@ namespace DramaMask {
                 int radius, 
                 int angleFrom, 
                 int angleTo,
-                int MaxSpeed
+                int maxSpeed
             );
             ~Speedometer();
 
-            void draw(const Cairo::RefPtr<Cairo::Context> &cr);
+            void draw(const Cairo::RefPtr<Cairo::Context> &cr, double currentSpeed);
 
         private:
             /**

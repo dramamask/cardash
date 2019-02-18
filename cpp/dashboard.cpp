@@ -22,6 +22,8 @@ namespace DramaMask
             speedoAngleTo,
             maxSpeed
         );
+
+        this->currentSpeed = 10;
     }
 
     Dashboard::~Dashboard()
@@ -37,7 +39,7 @@ namespace DramaMask
         cr->paint();
 
         // Draw the speedometer    
-        this->speedometer->draw(cr);
+        this->speedometer->draw(cr, this->currentSpeed);
 
         return true;
     }

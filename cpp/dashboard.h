@@ -19,6 +19,7 @@ namespace DramaMask {
 
         private:
             Speedometer *speedometer;
+            double currentSpeed;
 
             void getDimensions(int &width, int &height);
     };

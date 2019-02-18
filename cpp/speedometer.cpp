@@ -59,10 +59,8 @@ namespace DramaMask
         this->innerArcGlowColor = NULL;
     }
 
-    void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
+    void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr, double currentSpeed)
     {
-        double currentSpeed = 47;
-
         this->drawOuterArc(cr);
         this->drawInnerArcs(cr, this->angleTo, this->innerArcColor);
 
