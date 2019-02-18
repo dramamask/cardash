@@ -17,6 +17,8 @@ namespace DramaMask {
             // Override default signal handler:
             bool on_draw(Cairo::RefPtr<Cairo::Context> const &cr) override;
 
+            bool on_timeout();
+
         private:
             Speedometer *speedometer;
             double currentSpeed;

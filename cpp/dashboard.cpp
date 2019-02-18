@@ -24,6 +24,26 @@ namespace DramaMask
         );
 
         this->currentSpeed = 0;
+
+        Glib::signal_timeout().connect( sigc::mem_fun(*this, &Dashboard::on_timeout), 100 );
+    }
+
+    bool Dashboard::on_timeout()
+    {
+        this->currentSpeed += 10;
+        if (this->currentSpeed > 100) {
+            return false;
+        }
+
+        // force our program to redraw the entire clock.
+        auto win = get_window();
+        if (win)
+        {
+            Gdk::Rectangle r(0, 0, get_allocation().get_width(),
+                    get_allocation().get_height());
+            win->invalidate_rect(r, false);
+        }
+        return true;
     }
 
     Dashboard::~Dashboard()
