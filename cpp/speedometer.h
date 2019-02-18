@@ -17,6 +17,8 @@ class Speedometer : public DashControl
             int angleTo,
             int MaxSpeed
         );
+        ~Speedometer();
+
         void draw(const Cairo::RefPtr<Cairo::Context> &cr);
 
     private:

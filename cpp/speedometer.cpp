@@ -30,6 +30,11 @@ Speedometer::Speedometer(
     // TODO: find a nice font.
 }
 
+Speedometer::~Speedometer()
+{
+    //
+}
+
 void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr)
 {
     double currentSpeed = 47;
@@ -152,12 +157,17 @@ void Speedometer::drawForegroundSpeedIndicator(
     );
     cr->stroke();
 
-    // Draw glow around the end of the arc
-    Cairo::RefPtr<Cairo::RadialGradient> radial = Cairo::RadialGradient::create(100, 100, 50, 100, 100, 10);
-    radial->add_color_stop_rgba(0, 1, 0.74, 0, 0);
-    radial->add_color_stop_rgba(1, 1, 0.74, 0, 1);
-    cr->set_source(radial);
-    cr->arc(100, 100, 50, 0, 2 * M_PI);
+    // Calculate the position of the tip of the arc
+    double tipX = this->xPos + cos(angleTo) * radius;
+    double tipY = this->yPos + sin(angleTo) * radius;
+
+    // Define the radial gradient pattern for the tip of the speed indication arc
+    Cairo::RefPtr<Cairo::RadialGradient> gradientCircle;
+    gradientCircle = Cairo::RadialGradient::create(tipX, tipY, 50, tipX, tipY, 5);
+    gradientCircle->add_color_stop_rgba(0, 1, 0.74, 0, 0);
+    gradientCircle->add_color_stop_rgba(1, 1, 0.74, 0, 1);
+    cr->set_source(gradientCircle);
+    cr->arc(tipX, tipY, 50, 0, 2 * M_PI);
     cr->fill();
     // TODO: fix and finish
 
