@@ -65,6 +65,8 @@ namespace DramaMask
 
     void Speedometer::draw(Cairo::RefPtr<Cairo::Context> const & cr, double currentSpeed)
     {
+        this->currentSpeed = currentSpeed;
+
         this->drawOuterArc(cr);
         this->drawInnerArcs(cr, this->angleTo, this->innerArcColor);
 
@@ -75,8 +77,8 @@ namespace DramaMask
 
         this->drawMph(cr);
 
-        this->drawForegroundSpeedIndicator(cr, currentSpeed);
-        this->drawSpeedText(cr, currentSpeed);
+        this->drawForegroundSpeedIndicator(cr);
+        this->drawSpeedText(cr);
     }
 
     void Speedometer::drawOuterArc(const Cairo::RefPtr<Cairo::Context> &cr)
@@ -153,10 +155,7 @@ namespace DramaMask
         cr->stroke();
     }
 
-    void Speedometer::drawForegroundSpeedIndicator(
-        const Cairo::RefPtr<Cairo::Context> &cr, 
-        double currentSpeed
-    )
+    void Speedometer::drawForegroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr)
     {
         // Make sure we end the previous drawing path
         cr->begin_new_path();
@@ -174,7 +173,7 @@ namespace DramaMask
         
         // Calculate arc radius and to-angle
         double radius = 0.5 * (this->outerArc + this->innerArc) * this->radius;
-        double angleTo = this->getSpeedAngle(currentSpeed);
+        double angleTo = this->getSpeedAngle(this->currentSpeed);
 
         // Draw the first part of the arc (no line cap at the bottom)    
         cr->arc(
@@ -392,7 +391,7 @@ namespace DramaMask
     /**
      * Draw the actual speed in the middle of the dial
      */
-    void Speedometer::drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr, double currentSpeed)
+    void Speedometer::drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr)
     {
         // Set color
         cr->set_source_rgb(
@@ -410,7 +409,7 @@ namespace DramaMask
         // Calculate text location
         double xPos = 
             this->xPos - 
-            (0.3 * this->getNumberOfDigits(currentSpeed) * this->fontSizeLarge);
+            (0.3 * this->getNumberOfDigits(this->currentSpeed) * this->fontSizeLarge);
         double yPos = 
             this->yPos + 
             (0.3 * this->fontSizeLarge);
@@ -419,6 +418,6 @@ namespace DramaMask
         cr->move_to(xPos, yPos);
 
         // Draw text
-        cr->show_text(std::to_string((int)currentSpeed));
+        cr->show_text(std::to_string((int)this->currentSpeed));
     }
 }

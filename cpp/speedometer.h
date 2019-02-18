@@ -43,6 +43,11 @@ namespace DramaMask {
             int maxSpeed;
 
             /**
+             * The current speed to be displayed
+             */
+            double currentSpeed;
+
+            /**
              * Class that controls initialization animation
              */
             InitAnimation *initAnimation;
@@ -80,10 +85,7 @@ namespace DramaMask {
             );
 
             void drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr);
-            void drawForegroundSpeedIndicator(
-                const Cairo::RefPtr<Cairo::Context> &cr,
-                double currentSpeed
-            );
+            void drawForegroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr);
 
             void drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
             void drawMinorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
@@ -91,7 +93,7 @@ namespace DramaMask {
     
             double getSpeedAngle(double speed);
 
-            void drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr, double currentSpeed);
+            void drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr);
             void drawMph(const Cairo::RefPtr<Cairo::Context> &cr);
     };
 }
