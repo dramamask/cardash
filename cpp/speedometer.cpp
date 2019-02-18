@@ -5,6 +5,7 @@
 #include "angle.h"
 #include "color.h"
 #include "colorComponent.h"
+#include "initAnimation.h"
 
 namespace DramaMask
 {
@@ -14,13 +15,16 @@ namespace DramaMask
         int radius, 
         int angleFrom, 
         int angleTo,
-        int maxSpeed
+        int maxSpeed,
+        InitAnimation *initAnimation
     )
         : DashControl(xPos, yPos, radius)
     {
         this->angleFrom = Angle::degToCairo(angleFrom);
         this->angleTo = Angle::degToCairo(angleTo);
         this->maxSpeed = maxSpeed;
+
+        this->initAnimation = initAnimation;
 
         this->outerMostArc = 0.9;
         this->outerArc = 0.85;
@@ -31,11 +35,11 @@ namespace DramaMask
         this->fontFamily = "Ubuntu";
 
         this->outerArcColor = new DramaMask::Color(120, 120, 120);
-        this->innerArcColor = new DramaMask::Color(80, 80, 80);;
+        this->innerArcColor = new DramaMask::Color(80, 80, 80);
         this->speedTextColor = new DramaMask::Color(255, 255, 255);
-        this->speedIndBgColor = new DramaMask::Color(51, 26, 0);;
-        this->speedIndFgColor = new DramaMask::Color(255, 170, 0);;
-        this->innerArcGlowColor = new DramaMask::Color(140, 77, 0);;
+        this->speedIndBgColor = new DramaMask::Color(51, 26, 0);
+        this->speedIndFgColor = new DramaMask::Color(255, 170, 0);
+        this->innerArcGlowColor = new DramaMask::Color(140, 77, 0);
     }
 
     Speedometer::~Speedometer()

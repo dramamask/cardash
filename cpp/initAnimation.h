@@ -15,6 +15,9 @@ namespace DramaMask
             // Returns the time each frame lasts, in ms
             int getFrameTime();
 
+            // Returns the current frame
+            void getFrameInfo(int &currentFrame, int &totalNumOfFrames);
+
             // Increments frame. Returns false if initialization is done.
             bool incrementFrame();
 

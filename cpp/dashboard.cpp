@@ -15,21 +15,22 @@ namespace DramaMask
         int speedoAngleTo = 135;
         int maxSpeed = 160;
 
+        this->initAnimation = new InitAnimation(
+            25, // frames per second
+            4000 // total animation time in ms
+        );
+
         this->speedometer = new Speedometer(
             speedoXPos, 
             speedoYPos, 
             controlRadius,
             speedoAngleFrom,
             speedoAngleTo,
-            maxSpeed
+            maxSpeed,
+            initAnimation
         );
 
         this->currentSpeed = 0;
-
-        this->initAnimation = new InitAnimation(
-            25, // frames per second
-            4000 // total animation time in ms
-        );
     }
 
     Dashboard::~Dashboard()
@@ -52,7 +53,10 @@ namespace DramaMask
 
     void Dashboard::start()
     {
-        Glib::signal_timeout().connect( sigc::mem_fun(*this, &Dashboard::onTimer), 100 );
+        Glib::signal_timeout().connect(
+            sigc::mem_fun(*this, &Dashboard::onTimer), 
+            this->initAnimation->getFrameTime()
+        );
     }
 
     bool Dashboard::onTimer()
@@ -62,7 +66,12 @@ namespace DramaMask
             return false;
         }
 
-        this->forceRedraw();
+        bool keepGoing = this->initAnimation->incrementFrame();
+
+        if (keepGoing) {
+            this->forceRedraw();
+            return true;
+        }
 
         return true;
     }

@@ -12,9 +12,17 @@ namespace DramaMask
         this->currentFrame = 0;
     }
 
+    // Returns the time in ms taken up by one frame
     int InitAnimation::getFrameTime()
     {
         return this->frameTime;
+    }
+
+    // Returns info usefull for objects that perform init animations
+    void InitAnimation::getFrameInfo(int &currentFrame, int &totalNumOfFrames)
+    {
+        currentFrame = this->currentFrame;
+        totalNumOfFrames = this->totalNumOfFrames;
     }
 
     // Returns true if the animation should keep going.

@@ -8,6 +8,7 @@
 
 namespace DramaMask {
     class Color;
+    class InitAnimation;
 
     class Speedometer : public DashControl
     {
@@ -18,7 +19,8 @@ namespace DramaMask {
                 int radius, 
                 int angleFrom, 
                 int angleTo,
-                int maxSpeed
+                int maxSpeed,
+                InitAnimation *initAnimation
             );
             ~Speedometer();
 
@@ -39,6 +41,11 @@ namespace DramaMask {
              * The maximum speed displayed on the speedometer
              */
             int maxSpeed;
+
+            /**
+             * Class that controls initialization animation
+             */
+            InitAnimation *initAnimation;
 
             /**
              * Radius of the arcs, as a fraction of the total radius
