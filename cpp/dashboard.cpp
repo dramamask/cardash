@@ -61,11 +61,6 @@ namespace DramaMask
 
     bool Dashboard::onTimer()
     {
-        this->currentSpeed += 10;
-        if (this->currentSpeed > 100) {
-            return false;
-        }
-
         bool keepGoing = this->initAnimation->incrementFrame();
 
         if (keepGoing) {
@@ -73,7 +68,7 @@ namespace DramaMask
             return true;
         }
 
-        return true;
+        return false;
     }
 
     void Dashboard::forceRedraw()

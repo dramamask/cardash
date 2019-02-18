@@ -95,6 +95,8 @@ namespace DramaMask {
 
             void drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr);
             void drawMph(const Cairo::RefPtr<Cairo::Context> &cr);
+
+            void handleInitAnimation(const Cairo::RefPtr<Cairo::Context> &cr);
     };
 }
 

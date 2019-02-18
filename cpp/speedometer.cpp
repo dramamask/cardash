@@ -67,6 +67,8 @@ namespace DramaMask
     {
         this->currentSpeed = currentSpeed;
 
+        this->handleInitAnimation(cr);
+
         this->drawOuterArc(cr);
         this->drawInnerArcs(cr, this->angleTo, this->innerArcColor);
 
@@ -419,5 +421,10 @@ namespace DramaMask
 
         // Draw text
         cr->show_text(std::to_string((int)this->currentSpeed));
+    }
+
+    void Speedometer::handleInitAnimation(const Cairo::RefPtr<Cairo::Context> &cr)
+    {
+
     }
 }
