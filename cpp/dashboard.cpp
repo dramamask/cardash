@@ -1,5 +1,6 @@
 #include "dashboard.h"
 
+#include "initAnimation.h"
 #include "speedometer.h"
 
 namespace DramaMask
@@ -24,6 +25,11 @@ namespace DramaMask
         );
 
         this->currentSpeed = 0;
+
+        this->initAnimation = new InitAnimation(
+            25, // frames per second
+            4000 // total animation time in ms
+        );
     }
 
     Dashboard::~Dashboard()
@@ -56,15 +62,25 @@ namespace DramaMask
             return false;
         }
 
-        // force our program to redraw the entire clock.
+        this->forceRedraw();
+
+        return true;
+    }
+
+    void Dashboard::forceRedraw()
+    {
+        // force our program to redraw the entire dashboard
         auto win = get_window();
         if (win)
         {
-            Gdk::Rectangle r(0, 0, get_allocation().get_width(),
-                    get_allocation().get_height());
+            Gdk::Rectangle r(
+                0, 
+                0, 
+                get_allocation().get_width(),
+                get_allocation().get_height()
+            );
             win->invalidate_rect(r, false);
         }
-        return true;
     }
 
     void Dashboard::getDimensions(int &width, int &height)

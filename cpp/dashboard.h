@@ -5,6 +5,7 @@
 #include <gtkmm/drawingarea.h>
 
 namespace DramaMask {
+    class InitAnimation;
     class Speedometer;
     
     class Dashboard : public Gtk::DrawingArea
@@ -22,8 +23,11 @@ namespace DramaMask {
             bool onTimer();
 
         private:
+            InitAnimation *initAnimation;
             Speedometer *speedometer;
             double currentSpeed;
+
+            void forceRedraw();
 
             void getDimensions(int &width, int &height);
     };
