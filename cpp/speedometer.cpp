@@ -35,7 +35,7 @@ namespace DramaMask
         this->speedTextColor = new DramaMask::Color(255, 255, 255);
         this->speedIndBgColor = new DramaMask::Color(51, 26, 0);;
         this->speedIndFgColor = new DramaMask::Color(255, 170, 0);;
-        this->innerArcGlowColor = new DramaMask::Color(140, 90, 0);;
+        this->innerArcGlowColor = new DramaMask::Color(140, 77, 0);;
     }
 
     Speedometer::~Speedometer()
