@@ -343,7 +343,7 @@ namespace DramaMask
     {
         if (number < 100 ) {
             if (number < 10) {
-                return 1;
+                return 2; // Returning 2 on purpose as a hack for the font positioning!
             }
 
             return 2;
