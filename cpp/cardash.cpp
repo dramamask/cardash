@@ -14,7 +14,7 @@ int main(int argc, char** argv)
     window.resize(windowWidth, windowHeight);
     window.set_title("Car Dash");
 
-    Dashboard dashboard(windowWidth, windowHeight);
+    DramaMask::Dashboard dashboard(windowWidth, windowHeight);
     window.add(dashboard);
     dashboard.show();
 

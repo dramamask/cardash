@@ -6,69 +6,87 @@
 #include <gtkmm.h>
 #include <string.h>
 
-class Speedometer : public DashControl
-{
-    public:
-        Speedometer(
-            int xPos, 
-            int yPos, 
-            int radius, 
-            int angleFrom, 
-            int angleTo,
-            int MaxSpeed
-        );
-        ~Speedometer();
+namespace DramaMask {
+    class Color;
 
-        void draw(const Cairo::RefPtr<Cairo::Context> &cr);
+    class Speedometer : public DashControl
+    {
+        public:
+            Speedometer(
+                int xPos, 
+                int yPos, 
+                int radius, 
+                int angleFrom, 
+                int angleTo,
+                int MaxSpeed
+            );
+            ~Speedometer();
 
-    private:
-        /**
-         * Angle in radians where the speedometer starts.
-         */
-        double angleFrom;
+            void draw(const Cairo::RefPtr<Cairo::Context> &cr);
 
-        /**
-         * Angle in radians where the speedometer ends.
-         */
-        double angleTo;
+        private:
+            /**
+             * Angle in radians where the speedometer starts.
+             */
+            double angleFrom;
 
-        /**
-         * The maximum speed displayed on the speedometer
-         */
-        int maxSpeed;
+            /**
+             * Angle in radians where the speedometer ends.
+             */
+            double angleTo;
 
-        /**
-         * Radius of the arcs, as a fraction of the total radius
-         */
-        double outerMostArc;
-        double outerArc;
-        double innerArc;
+            /**
+             * The maximum speed displayed on the speedometer
+             */
+            int maxSpeed;
 
-        /**
-         * Font defintions
-         */
-        int fontSizeSmall;
-        int fontSizeLarge;
-        int fontSizeMph;
-        std::string fontFamily;
+            /**
+             * Radius of the arcs, as a fraction of the total radius
+             */
+            double outerMostArc;
+            double outerArc;
+            double innerArc;
 
-        void drawOuterArc(const Cairo::RefPtr<Cairo::Context> &cr);
-        void drawInnerArcs(const Cairo::RefPtr<Cairo::Context> &cr);
+            /**
+             * Font defintions
+             */
+            int fontSizeSmall;
+            int fontSizeLarge;
+            int fontSizeMph;
+            std::string fontFamily;
 
-        void drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr);
-        void drawForegroundSpeedIndicator(
-            const Cairo::RefPtr<Cairo::Context> &cr, 
-            double currentSpeed
-        );
+            /**
+             * Color definitions
+             */
+            DramaMask::Color *outerArcColor;
+            DramaMask::Color *innerArcColor;
+            DramaMask::Color *speedTextColor;
+            DramaMask::Color *speedIndBgColor;
+            DramaMask::Color *speedIndFgColor;
+            DramaMask::Color *innerArcGlowColor;
 
-        void drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
-        void drawMinorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
-        int getNumberOfDigits(int number);
-  
-        double getSpeedAngle(double speed);
+            void drawOuterArc(const Cairo::RefPtr<Cairo::Context> &cr);
+            void drawInnerArcs(
+                const Cairo::RefPtr<Cairo::Context> &cr,
+                double angleTo,
+                DramaMask::Color *color
+            );
 
-        void drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr, double currentSpeed);
-        void drawMph(const Cairo::RefPtr<Cairo::Context> &cr);
-};
+            void drawBackgroundSpeedIndicator(const Cairo::RefPtr<Cairo::Context> &cr);
+            void drawForegroundSpeedIndicator(
+                const Cairo::RefPtr<Cairo::Context> &cr,
+                double currentSpeed
+            );
+
+            void drawMajorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
+            void drawMinorSpeedLines(const Cairo::RefPtr<Cairo::Context> &cr);
+            int getNumberOfDigits(int number);
+    
+            double getSpeedAngle(double speed);
+
+            void drawSpeedText(const Cairo::RefPtr<Cairo::Context> &cr, double currentSpeed);
+            void drawMph(const Cairo::RefPtr<Cairo::Context> &cr);
+    };
+}
 
 #endif
