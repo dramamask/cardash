@@ -4,10 +4,11 @@
 
 namespace DramaMask
 {
-    InitAnimation::InitAnimation(int frameRate, int totalTime)
+    InitAnimation::InitAnimation(int frameRate, int totalTime,int initialWaitTime)
     {
         this->frameRate = frameRate;
         this->totalTime = totalTime;
+        this->initialWaitTime = initialWaitTime;
 
         this->frameTime = 1000 / this->frameRate;
         this->totalNumOfFrames = ((double)totalTime / 1000) * (double)frameRate;

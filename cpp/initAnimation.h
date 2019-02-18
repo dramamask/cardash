@@ -10,7 +10,7 @@ namespace DramaMask
              * frameRate is the number of frames per second during the initialization
              * totalTime is the total time in ms that the initialization will last 
              */
-            InitAnimation(int frameRate, int totalTime);
+            InitAnimation(int frameRate, int totalTime, int initialWaitTime);
 
             // Returns the time each frame lasts, in ms
             int getFrameTime();
@@ -23,7 +23,8 @@ namespace DramaMask
 
         private:
             int frameRate; // frames per second
-            int totalTime; // ms
+            int totalTime; // Total animation time, after the initial wiat time (ms)
+            int initialWaitTime; // Time to wait before starting the animation (ms)
             
             int totalNumOfFrames; // Total number of frames during the animation
             int currentFrame; // Current frame

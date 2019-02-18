@@ -429,8 +429,12 @@ namespace DramaMask
         int totalNumOfFrames;
         this->initAnimation->getFrameInfo(currentFrame, totalNumOfFrames);
 
-        double mphPerFrame = (double)this->maxSpeed / (double)totalNumOfFrames;
+        double mphPerFrame = (double)(2 * this->maxSpeed) / (double)totalNumOfFrames;
 
         this->currentSpeed += ((double)currentFrame * mphPerFrame);
+
+        if (currentFrame > (totalNumOfFrames / 2)) {
+            this->currentSpeed = this->maxSpeed - (this->currentSpeed - this->maxSpeed);
+        }
     }
 }
