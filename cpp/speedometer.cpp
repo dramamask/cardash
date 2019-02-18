@@ -425,6 +425,12 @@ namespace DramaMask
 
     void Speedometer::handleInitAnimation(const Cairo::RefPtr<Cairo::Context> &cr)
     {
+        int currentFrame;
+        int totalNumOfFrames;
+        this->initAnimation->getFrameInfo(currentFrame, totalNumOfFrames);
 
+        double mphPerFrame = (double)this->maxSpeed / (double)totalNumOfFrames;
+
+        this->currentSpeed += ((double)currentFrame * mphPerFrame);
     }
 }

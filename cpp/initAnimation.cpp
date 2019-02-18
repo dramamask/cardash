@@ -1,14 +1,16 @@
 #include "initAnimation.h"
 
+#include <math.h>
+
 namespace DramaMask
 {
-    InitAnimation::InitAnimation(int frameRate, int TotalTime)
+    InitAnimation::InitAnimation(int frameRate, int totalTime)
     {
         this->frameRate = frameRate;
         this->totalTime = totalTime;
 
         this->frameTime = 1000 / this->frameRate;
-        this->totalNumOfFrames = ((double)totalTime / 1000) * frameRate;
+        this->totalNumOfFrames = ((double)totalTime / 1000) * (double)frameRate;
         this->currentFrame = 0;
     }
 
