@@ -13,11 +13,13 @@ namespace DramaMask {
             Dashboard(int width, int height);
             virtual ~Dashboard();
 
+            void start();            
+
         protected:
             // Override default signal handler:
             bool on_draw(Cairo::RefPtr<Cairo::Context> const &cr) override;
 
-            bool on_timeout();
+            bool onTimer();
 
         private:
             Speedometer *speedometer;

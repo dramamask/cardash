@@ -17,6 +17,7 @@ int main(int argc, char** argv)
     DramaMask::Dashboard dashboard(windowWidth, windowHeight);
     window.add(dashboard);
     dashboard.show();
+    dashboard.start();
 
     return app->run(window);
 }
