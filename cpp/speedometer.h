@@ -28,16 +28,6 @@ namespace DramaMask {
 
         private:
             /**
-             * Angle in radians where the speedometer starts.
-             */
-            double angleFrom;
-
-            /**
-             * Angle in radians where the speedometer ends.
-             */
-            double angleTo;
-
-            /**
              * The maximum speed displayed on the speedometer
              */
             int maxSpeed;
