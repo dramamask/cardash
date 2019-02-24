@@ -2,7 +2,6 @@
 
 #include <string.h>
 
-#include "angle.h"
 #include "color.h"
 #include "colorComponent.h"
 #include "initAnimation.h"
@@ -18,10 +17,8 @@ namespace DramaMask
         int maxSpeed,
         InitAnimation *initAnimation
     )
-        : DashControl(xPos, yPos, radius)
-    {
-        this->angleFrom = Angle::degToCairo(angleFrom);
-        this->angleTo = Angle::degToCairo(angleTo);
+        : DashControl(xPos, yPos, radius, agnleFrom, angleTo)
+    {        
         this->maxSpeed = maxSpeed;
 
         this->initAnimation = initAnimation;
