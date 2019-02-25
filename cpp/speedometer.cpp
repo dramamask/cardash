@@ -4,6 +4,7 @@
 
 #include "color.h"
 #include "colorComponent.h"
+#include "dashboard.h"
 #include "initAnimation.h"
 
 namespace DramaMask
@@ -15,13 +16,13 @@ namespace DramaMask
         int angleFrom, 
         int angleTo,
         int maxSpeed,
-        InitAnimation *initAnimation
+        Dashboard *dashboard
     )
         : DashControl(xPos, yPos, radius, angleFrom, angleTo)
     {        
         this->maxSpeed = maxSpeed;
 
-        this->initAnimation = initAnimation;
+        this->initAnimation = dashboard->getInitAnimation();
 
         this->outerMostArc = 0.9;
         this->outerArc = 0.85;

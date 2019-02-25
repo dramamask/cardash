@@ -1,5 +1,6 @@
 #include "dashboard.h"
 
+#include "color.h"
 #include "initAnimation.h"
 #include "speedometer.h"
 
@@ -15,6 +16,13 @@ namespace DramaMask
         int speedoAngleTo = 135;
         int maxSpeed = 160;
 
+        this->outerArcColor = new DramaMask::Color(120, 120, 120);
+        this->innerArcColor = new DramaMask::Color(80, 80, 80);
+        this->valueTextColor = new DramaMask::Color(255, 255, 255);
+        this->valueIndBgColor = new DramaMask::Color(51, 26, 0);
+        this->valueIndFgColor = new DramaMask::Color(255, 170, 0);
+        this->innerArcGlowColor = new DramaMask::Color(140, 77, 0);
+
         this->initAnimation = new InitAnimation(
             25, // frames per second
             1800, // total animation time in ms (not including initial wait time)
@@ -28,7 +36,7 @@ namespace DramaMask
             speedoAngleFrom,
             speedoAngleTo,
             maxSpeed,
-            initAnimation
+            this
         );
 
         this->currentSpeed = 0;
@@ -58,6 +66,41 @@ namespace DramaMask
             sigc::mem_fun(*this, &Dashboard::onTimer), 
             this->initAnimation->getFrameTime()
         );
+    }
+
+    InitAnimation *Dashboard::getInitAnimation()
+    {
+        return this->initAnimation;
+    }
+
+    Color *Dashboard::getOuterArcColor()
+    {
+        return this->outerArcColor;
+    }
+
+    Color *Dashboard::getInnerArcColor()
+    {
+        return this->innerArcColor;
+    }
+
+    Color *Dashboard::getValueTextColor()
+    {
+        return this->valueTextColor;
+    }
+
+    Color *Dashboard::getValueIndBgColor()
+    {
+        return this->valueIndBgColor;
+    }
+
+    Color *Dashboard::getValueIndFgColor()
+    {
+        return this->valueIndFgColor;
+    }
+
+    Color *Dashboard::getInnerArcGlowColor()
+    {
+        return this->innerArcGlowColor;
     }
 
     bool Dashboard::onTimer()

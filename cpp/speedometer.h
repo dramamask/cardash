@@ -8,6 +8,7 @@
 
 namespace DramaMask {
     class Color;
+    class Dashboard;
     class InitAnimation;
 
     class Speedometer : public DashControl
@@ -20,7 +21,7 @@ namespace DramaMask {
                 int angleFrom, 
                 int angleTo,
                 int maxSpeed,
-                InitAnimation *initAnimation
+                Dashboard *dashboard
             );
             ~Speedometer();
 

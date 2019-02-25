@@ -5,6 +5,7 @@
 #include <gtkmm/drawingarea.h>
 
 namespace DramaMask {
+    class Color;
     class InitAnimation;
     class Speedometer;
     
@@ -14,7 +15,14 @@ namespace DramaMask {
             Dashboard(int width, int height);
             virtual ~Dashboard();
 
-            void start();            
+            void start();
+            InitAnimation *getInitAnimation();
+            Color *getOuterArcColor();
+            Color *getInnerArcColor();
+            Color *getValueTextColor();
+            Color *getValueIndBgColor();
+            Color *getValueIndFgColor();
+            Color *getInnerArcGlowColor();
 
         protected:
             // Override default signal handler:
@@ -26,6 +34,16 @@ namespace DramaMask {
             InitAnimation *initAnimation;
             Speedometer *speedometer;
             double currentSpeed;
+
+            /**
+             * Color definitions
+             */
+            Color *outerArcColor;
+            Color *innerArcColor;
+            Color *valueTextColor;
+            Color *valueIndBgColor;
+            Color *valueIndFgColor;
+            Color *innerArcGlowColor;
 
             void forceRedraw();
 
