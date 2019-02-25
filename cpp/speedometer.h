@@ -39,9 +39,9 @@ namespace DramaMask {
             double currentSpeed;
 
             /**
-             * Class that controls initialization animation
+             * Reference to the main dashboard
              */
-            InitAnimation *initAnimation;
+            Dashboard *dashboard;
 
             /**
              * Radius of the arcs, as a fraction of the total radius

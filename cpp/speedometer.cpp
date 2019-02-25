@@ -22,7 +22,7 @@ namespace DramaMask
     {        
         this->maxSpeed = maxSpeed;
 
-        this->initAnimation = dashboard->getInitAnimation();
+        this->dashboard = dashboard;
 
         this->outerMostArc = 0.9;
         this->outerArc = 0.85;
@@ -80,9 +80,9 @@ namespace DramaMask
     void Speedometer::drawOuterArc(const Cairo::RefPtr<Cairo::Context> &cr)
     {
         cr->set_source_rgb(
-            this->dashboard->getOuterArcColor->getR(),
-            this->dashboard->getOuterArcColor->getG(),
-            this->dashboard->getOuterArcColor->getB()
+            this->dashboard->getOuterArcColor()->getR(),
+            this->dashboard->getOuterArcColor()->getG(),
+            this->dashboard->getOuterArcColor()->getB()
         );
         cr->set_line_width(2);
 
@@ -250,9 +250,9 @@ namespace DramaMask
 
             // Draw line
             cr->set_source_rgb(      
-                this->dashboard->getOuterArcColor->getR(),
-                this->dashboard->getOuterArcColor->getG(),
-                this->dashboard->getOuterArcColor->getB()
+                this->dashboard->getOuterArcColor()->getR(),
+                this->dashboard->getOuterArcColor()->getG(),
+                this->dashboard->getOuterArcColor()->getB()
             );
             cr->move_to(x1, y1);
             cr->line_to(x2, y2);
@@ -423,7 +423,7 @@ namespace DramaMask
         // Get the current frame information
         int currentFrame;
         int totalNumOfFrames;
-        this->initAnimation->getFrameInfo(currentFrame, totalNumOfFrames);
+        this->dashboard->getInitAnimation()->getFrameInfo(currentFrame, totalNumOfFrames);
 
         // Calcuate the mph increment for each frame
         double mphPerFrame = (double)(2 * this->maxSpeed) / (double)totalNumOfFrames;
