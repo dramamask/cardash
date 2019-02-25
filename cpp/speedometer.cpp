@@ -32,7 +32,6 @@ namespace DramaMask
         this->fontSizeMph = 20;
         this->fontFamily = "Ubuntu";
 
-        this->outerArcColor = new DramaMask::Color(120, 120, 120);
         this->innerArcColor = new DramaMask::Color(80, 80, 80);
         this->speedTextColor = new DramaMask::Color(255, 255, 255);
         this->speedIndBgColor = new DramaMask::Color(51, 26, 0);
@@ -41,10 +40,7 @@ namespace DramaMask
     }
 
     Speedometer::~Speedometer()
-    {
-        delete this->outerArcColor;
-        this->outerArcColor = NULL;
-        
+    {        
         delete this->innerArcColor;
         this->innerArcColor = NULL;
         
@@ -84,9 +80,9 @@ namespace DramaMask
     void Speedometer::drawOuterArc(const Cairo::RefPtr<Cairo::Context> &cr)
     {
         cr->set_source_rgb(
-            this->outerArcColor->getR(),
-            this->outerArcColor->getG(),
-            this->outerArcColor->getB()
+            this->dashboard->getOuterArcColor->getR(),
+            this->dashboard->getOuterArcColor->getG(),
+            this->dashboard->getOuterArcColor->getB()
         );
         cr->set_line_width(2);
 
@@ -254,9 +250,9 @@ namespace DramaMask
 
             // Draw line
             cr->set_source_rgb(      
-                this->outerArcColor->getR(),
-                this->outerArcColor->getG(),
-                this->outerArcColor->getB()
+                this->dashboard->getOuterArcColor->getR(),
+                this->dashboard->getOuterArcColor->getG(),
+                this->dashboard->getOuterArcColor->getB()
             );
             cr->move_to(x1, y1);
             cr->line_to(x2, y2);

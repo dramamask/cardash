@@ -59,9 +59,9 @@ namespace DramaMask {
             std::string fontFamily;
 
             /**
-             * Color definitions
+             * Color definitions.
              */
-            DramaMask::Color *outerArcColor;
+            // TODO: use the color defs from the dashboard class instead
             DramaMask::Color *innerArcColor;
             DramaMask::Color *speedTextColor;
             DramaMask::Color *speedIndBgColor;

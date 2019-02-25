@@ -44,8 +44,29 @@ namespace DramaMask
 
     Dashboard::~Dashboard()
     {
+        delete this->initAnimation;
+        this->initAnimation = NULL;
+
         delete this->speedometer;
         this->speedometer = NULL;
+
+        delete this->outerArcColor;
+        this->outerArcColor = NULL;
+        
+        delete this->innerArcColor;
+        this->innerArcColor = NULL;
+        
+        delete this->valueTextColor;
+        this->valueTextColor = NULL;
+        
+        delete this->valueIndBgColor;
+        this->valueIndBgColor = NULL;
+        
+        delete this->valueIndFgColor;
+        this->valueIndFgColor = NULL;
+        
+        delete this->innerArcGlowColor;
+        this->innerArcGlowColor = NULL;
     }
 
     bool Dashboard::on_draw(Cairo::RefPtr<Cairo::Context> const &cr)
