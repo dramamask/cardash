@@ -17,7 +17,7 @@ namespace DramaMask
         int maxSpeed,
         InitAnimation *initAnimation
     )
-        : DashControl(xPos, yPos, radius, agnleFrom, angleTo)
+        : DashControl(xPos, yPos, radius, angleFrom, angleTo)
     {        
         this->maxSpeed = maxSpeed;
 
